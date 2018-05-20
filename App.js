@@ -1,14 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 import { Text, View, Button } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { Camera, Permissions, Speech } from 'expo';
 
 export default class CameraExample extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     isLoading: '',
-    answerText: ''
+    answerText: '',
+    inProgress: null
   };
 
   async componentWillMount() {
@@ -26,6 +27,23 @@ export default class CameraExample extends React.Component {
       this.uploadImageAsync(photo.uri)
     }
   }
+
+  _speak = () => {
+    const start = () => {
+      this.setState({ inProgress: true });
+    };
+    const complete = () => {
+      this.state.inProgress && this.setState({ inProgress: false });
+    };
+
+    Speech.speak(this.state.answerText, {
+      language: 'th-TH',
+      onStart: start,
+      onDone: complete,
+      onStopped: complete,
+      onError: complete,
+    });
+  };
 
   async uploadImageAsync(uri) {
 
@@ -52,11 +70,13 @@ export default class CameraExample extends React.Component {
             isLoading: '',
             answerText: 'ระบบไม่พร้อมใช้งาน กรุณาลองใหม่อีกครั้ง'
           })
+          this._speak()
         } else {
           this.setState({
             isLoading: '',
             answerText: responseJson.MBN
           })
+          this._speak()
         }
       })
       .catch(() => this.setState({answerText: 'โปรดลองใหม่อีกครั้ง'}))
