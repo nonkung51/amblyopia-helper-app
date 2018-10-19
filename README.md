@@ -10,4 +10,4 @@
 โรงเรียนขอนแก่นวิทยายน
 
 ### ตัวอย่างการทำงานของโปรแกรม
-![](https://imgur.com/a/TEVyC2n)
+![image not found](https://i.imgur.com/nZcweC3.png)
